@@ -1,0 +1,86 @@
+scripts/kconfig/conf --silentoldconfig Kconfig
+drivers/video/msm/Kconfig:53:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:60:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:77:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:84:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:337:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:344:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:351:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:358:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:365:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:381:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:388:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:402:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:409:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:423:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:438:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:444:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:472:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:478:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:484:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:490:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:496:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:502:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:514:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:518:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:542:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:554:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:566:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:573:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:580:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:674:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:681:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:688:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:695:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:702:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:709:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:728:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:735:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:746:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:749:warning: choice value used outside its choice group
+drivers/video/msm/Kconfig:752:warning: choice value used outside its choice group
+warning: (MTD_MSM_NAND && MTD_DOC2000 && MTD_DOC2001 && MTD_DOC2001PLUS) selects MTD_NAND_IDS which has unmet direct dependencies (MTD && MTD_NAND)
+warning: (MTD_MSM_NAND && MTD_DOC2000 && MTD_DOC2001 && MTD_DOC2001PLUS) selects MTD_NAND_IDS which has unmet direct dependencies (MTD && MTD_NAND)
+  CHK     include/linux/version.h
+  CHK     include/generated/utsrelease.h
+make[1]: `include/generated/mach-types.h' is up to date.
+  CALL    scripts/checksyscalls.sh
+  CHK     include/generated/compile.h
+  GZIP    kernel/config_data.gz
+  CHK     kernel/config_data.h
+  CC      arch/arm/mach-msm/board-msm7x30.o
+  CC      drivers/i2c/busses/i2c-msm.o
+  LD      drivers/i2c/busses/built-in.o
+  CC      drivers/media/video/msm/gemini/msm_gemini_sync.o
+  LD      drivers/i2c/built-in.o
+  LD      arch/arm/mach-msm/built-in.o
+  LD      drivers/media/video/msm/gemini/built-in.o
+  LD      drivers/media/video/msm/built-in.o
+  LD      drivers/media/video/built-in.o
+  LD      drivers/media/built-in.o
+  LD      drivers/built-in.o
+  LD      vmlinux.o
+  MODPOST vmlinux.o
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  LD      init/built-in.o
+  LD      .tmp_vmlinux1
+  KSYM    .tmp_kallsyms1.S
+  AS      .tmp_kallsyms1.o
+  LD      .tmp_vmlinux2
+  KSYM    .tmp_kallsyms2.S
+  AS      .tmp_kallsyms2.o
+  LD      vmlinux
+  SYSMAP  System.map
+  SYSMAP  .tmp_System.map
+  OBJCOPY arch/arm/boot/Image
+  Kernel: arch/arm/boot/Image is ready
+  Building modules, stage 2.
+  MODPOST 23 modules
+  GZIP    arch/arm/boot/compressed/piggy.gzip
+  AS      arch/arm/boot/compressed/piggy.gzip.o
+  LD      arch/arm/boot/compressed/vmlinux
+  OBJCOPY arch/arm/boot/zImage
+  Kernel: arch/arm/boot/zImage is ready
