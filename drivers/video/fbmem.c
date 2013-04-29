@@ -36,7 +36,6 @@
 #include <asm/fb.h>
 
 extern int msmfb_bootup; 
-#endif
 
 
     /*
