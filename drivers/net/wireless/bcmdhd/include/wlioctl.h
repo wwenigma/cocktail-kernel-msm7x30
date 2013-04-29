@@ -24,7 +24,7 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: wlioctl.h 307468 2012-01-11 18:29:27Z $
+ * $Id: wlioctl.h 331292 2012-05-04 09:04:23Z $
  */
 
 
@@ -180,6 +180,7 @@ typedef struct wlc_ssid {
 	uchar       SSID[32];
 } wlc_ssid_t;
 
+#define WL_BSS_FLAGS_FROM_BEACON    0x01
 
 #define WL_BSSTYPE_INFRA 1
 #define WL_BSSTYPE_INDEP 0
@@ -558,9 +559,6 @@ typedef enum sup_auth_status {
 #define CRYPTO_ALGO_AES_OCB_MSDU    5
 #define CRYPTO_ALGO_AES_OCB_MPDU    6
 #define CRYPTO_ALGO_NALG        7
-#ifdef BCMWAPI_WPI
-#define CRYPTO_ALGO_SMS4        11
-#endif /* BCMWAPI_WPI */
 #define CRYPTO_ALGO_PMK			12	
 
 #define WSEC_GEN_MIC_ERROR  0x0001
@@ -612,9 +610,6 @@ typedef struct {
 #define AES_ENABLED     0x0004
 #define WSEC_SWFLAG     0x0008
 #define SES_OW_ENABLED      0x0040  
-#ifdef BCMWAPI_WPI
-#define SMS4_ENABLED        0x0100
-#endif /* BCMWAPI_WPI */
 
 
 #define WPA_AUTH_DISABLED   0x0000  
@@ -626,12 +621,6 @@ typedef struct {
 #define WPA2_AUTH_PSK       0x0080  
 #define BRCM_AUTH_PSK           0x0100  
 #define BRCM_AUTH_DPT       0x0200  
-#ifdef BCMWAPI_WAI
-#define WPA_AUTH_WAPI           0x0400
-#define WAPI_AUTH_NONE      WPA_AUTH_NONE   /* none (IBSS) */
-#define WAPI_AUTH_UNSPECIFIED   0x0400  /* over AS */
-#define WAPI_AUTH_PSK       0x0800  /* Pre-shared key */
-#endif /* BCMWAPI_WAI */
 #define WPA2_AUTH_MFP           0x1000  
 #define WPA2_AUTH_TPK		0x2000 	
 #define WPA2_AUTH_FT		0x4000 	
@@ -1225,7 +1214,7 @@ typedef struct {
 
 #define WL_AUTH_OPEN_SYSTEM     0   
 #define WL_AUTH_SHARED_KEY      1   
-#define WL_AUTH_OPEN_SHARED		3	
+#define WL_AUTH_OPEN_SHARED		2	
 
 
 #define WL_RADIO_SW_DISABLE     (1<<0)
@@ -1471,6 +1460,14 @@ typedef struct wl_sampledata {
 	uint32 flag;    
 } wl_sampledata_t;
 
+
+#define WL_CHAN_VALID_HW    (1 << 0)    
+#define WL_CHAN_VALID_SW    (1 << 1)    
+#define WL_CHAN_BAND_5G     (1 << 2)    
+#define WL_CHAN_RADAR       (1 << 3)    
+#define WL_CHAN_INACTIVE    (1 << 4)    
+#define WL_CHAN_PASSIVE     (1 << 5)    
+#define WL_CHAN_RESTRICTED  (1 << 6)    
 
 
 #define WL_ERROR_VAL        0x00000001
@@ -2475,21 +2472,6 @@ typedef struct assertlog_results {
 
 #define LOGRRC_FIX_LEN  8
 #define IOBUF_ALLOWED_NUM_OF_LOGREC(type, len) ((len - LOGRRC_FIX_LEN)/sizeof(type))
-
-#ifdef BCMWAPI_WAI
-#define IV_LEN 16 /* XXX, same as SMS4_WPI_PN_LEN */
-struct wapi_sta_msg_t
-{
-	uint16  msg_type;
-	uint16  datalen;
-	uint8   vap_mac[6];
-	uint8   reserve_data1[2];
-	uint8   sta_mac[6];
-	uint8   reserve_data2[2];
-	uint8   gsn[IV_LEN];
-	uint8   wie[256];
-};
-#endif /* BCMWAPI_WAI */
 
 
 

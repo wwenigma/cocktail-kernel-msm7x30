@@ -1,3 +1,6 @@
+CFLAGS_tmdlHdmiTx.o = -Wno-enum-compare
+CFLAGS_tmbslTDA9989_Misc.o = -Wno-enum-compare
+
 
 ############### select your chip + platform here ###################
 

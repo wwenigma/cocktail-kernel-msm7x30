@@ -1,7 +1,7 @@
 /* drivers/i2c/busses/i2c-msm.c
  *
  * Copyright (C) 2007 Google, Inc.
- * Copyright (c) 2009, Code Aurora Forum. All rights reserved.
+ * Copyright (c) 2009, The Linux Foundation. All rights reserved.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -511,13 +511,9 @@ wait_for_int:
 			goto out_err;
 		}
 		if (dev->err) {
-
-/*cm10 error fix*/
-#if 0
 			dev_err(dev->dev,
 				"(%04x) Error during data xfer (%d)\n",
 				addr, dev->err);
-#endif
 			ret = dev->err;
 			goto out_err;
 		}

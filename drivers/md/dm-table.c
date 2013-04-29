@@ -1179,7 +1179,7 @@ combine_limits:
 static void dm_table_set_integrity(struct dm_table *t)
 {
 	struct gendisk *template_disk = NULL;
-        int rc;
+	int rc;
 
 	if (!blk_get_integrity(dm_disk(t->md)))
 		return;

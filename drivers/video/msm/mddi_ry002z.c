@@ -179,9 +179,8 @@ static void mddi_ry002z_lcd_ic_init(void)
 		write_client_reg(0xFD,0x06);	
 
 		write_client_reg(0x35,0x00); // tearing on
-		
+
 		write_client_reg(0xCC, 0x03);
-		
 		write_client_reg(0xB6,0x2C);
 		write_client_reg(0xFD,0x2C);
 		 
@@ -461,9 +460,8 @@ void mddi_himax_ic_init_again(void)
 		write_client_reg(0xFD,0x06);	
 
 		write_client_reg(0x35,0x00); // tearing on
-		
+
 		write_client_reg(0xCC, 0x03);
-		
 		write_client_reg(0xB6,0x2C);
 		write_client_reg(0xFD,0x2C);
 		 
@@ -656,12 +654,6 @@ int mddi_himax_workround_enable(void)
 EXPORT_SYMBOL(mddi_himax_workround_enable);
 #endif
 
-void mddi_enable_high_clk(uint32 enable)
-{
-	if(lcdid == LCDID_TRULY || lcdid == LCDID_TDT)
-		mdp4_mddi_high_clk = enable;
-}
-EXPORT_SYMBOL(mddi_enable_high_clk);
 static void pmic_set_lcd_intensity(int level)
 {
 	int ret;
@@ -698,7 +690,6 @@ static void mddi_ry002z_lcd_set_backlight(struct msm_fb_data_type *mfd)
 
 static int mddi_ry002z_lcd_on(struct platform_device *pdev)
 {
-	mddi_enable_high_clk(1);
 	mddi_ry002z_lcd_ic_init();
 
 #ifdef CONFIG_DEBUG_FS
@@ -724,7 +715,6 @@ static int mddi_ry002z_lcd_off(struct platform_device *pdev)
 	lcd_driver_state.display_on = 0;
 	lcd_driver_state.is_sleep = 1;
 #endif
-	mddi_enable_high_clk(0);	
 	pr_info("%s\n", __func__);
 
 	return 0;
@@ -755,9 +745,7 @@ static int __devinit mddi_ry002z_probe(struct platform_device *pdev)
 		pr_err("%s pwm_request() failed\n", __func__);
 		bl_pwm = NULL;
 	}
-#ifdef CONFIG_FIX_BOOTUP_BLINK
         pmic_set_lcd_intensity(255);
-#endif
 	ry002z_fbpdev = msm_fb_add_device(pdev);
 	if (!ry002z_fbpdev) {
 		dev_err(&pdev->dev, "failed to add msm_fb device\n");
@@ -843,7 +831,7 @@ static int __init mddi_ry002z_init(void)
 		pinfo->lcd.v_front_porch = 5;
 		pinfo->lcd.v_pulse_width = 4;
 	}
-	else{
+	else {
 		pinfo->lcd.vsync_enable = FALSE;
 		pinfo->lcd.refx100 = 6300;
 		pinfo->lcd.v_back_porch = 12;

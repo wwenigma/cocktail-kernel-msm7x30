@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010,2011, Dan Magenheimer, Oracle Corp.
  * Copyright (c) 2010,2011, Nitin Gupta
- * Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
+ * Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
  *
  * Qcache provides an in-kernel "host implementation" for transcendent memory
  * and, thus indirectly, for cleancache and frontswap.  Qcache includes a
@@ -160,18 +160,15 @@ static void *qcache_alloc(void)
 
 	spin_lock_irqsave(&qc->lock, flags);
 	offset = bitmap_find_free_region(qc->bitmap, qc->pages, 0);
+	spin_unlock_irqrestore(&qc->lock, flags);
 
-	if (offset < 0) {
-		spin_unlock_irqrestore(&qc->lock, flags);
+	if (offset < 0)
 		return NULL;
-	}
 
+	addr = qc->addr + offset * PAGE_SIZE;
 	zcache_qc_allocated++;
 	zcache_qc_used++;
 	zcache_qc_max_used = max(zcache_qc_max_used, zcache_qc_used);
-	spin_unlock_irqrestore(&qc->lock, flags);
-
-	addr = qc->addr + offset * PAGE_SIZE;
 
 	return addr;
 }
@@ -186,10 +183,10 @@ static void qcache_free(void *addr)
 
 	spin_lock_irqsave(&qc->lock, flags);
 	bitmap_release_region(qc->bitmap, offset, 0);
+	spin_unlock_irqrestore(&qc->lock, flags);
 
 	zcache_qc_freed++;
 	zcache_qc_used--;
-	spin_unlock_irqrestore(&qc->lock, flags);
 }
 
 /*

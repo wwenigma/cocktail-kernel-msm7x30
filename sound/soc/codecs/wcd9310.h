@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -23,6 +23,7 @@
 #define DEFAULT_DCE_STA_WAIT 55
 #define DEFAULT_DCE_WAIT 60000
 #define DEFAULT_STA_WAIT 5000
+#define VDDIO_MICBIAS_MV 1800
 
 #define STA 0
 #define DCE 1

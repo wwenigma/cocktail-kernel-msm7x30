@@ -67,7 +67,7 @@
  *
  */
 
-#define FRAME_PACKING 200
+#define FRAME_PACKING 0x20
 #define NO_FP(x) ((x) % FRAME_PACKING)
 #define IS_FP(x) ((x) > FRAME_PACKING)
 #define WITH_FP(x) ((x) + FRAME_PACKING * (this->tda.setio.video_in.structure3D == TMDL_HDMITX_3D_FRAME_PACKING))
@@ -622,9 +622,9 @@ static char *tda_spy_vfmt(int fmt)
       case TMDL_HDMITX_VFMT_31_1920x1080p_50Hz: {return "vic 31: 1920x1080p 50Hz";break;}
       case TMDL_HDMITX_VFMT_32_1920x1080p_24Hz: {return "vic 32: 1920x1080p 24Hz";break;}
       case TMDL_HDMITX_VFMT_33_1920x1080p_25Hz: {return "vic 33: 1920x1080p 25Hz";break;}
-      case TMDL_HDMITX_VFMT_34_1920x1080p_30Hz: {return "vic 34: 1920x1080p 30Hz";break;}
+//      case TMDL_HDMITX_VFMT_34_1920x1080p_30Hz: {return "vic 34: 1920x1080p 30Hz";break;}
       case TMDL_HDMITX_VFMT_35_2880x480p_60Hz: {return "vic 3: 2880x480p 60Hz";break;}
-      case TMDL_HDMITX_VFMT_36_2880x480p_60Hz: {return "vic 3: 2880x480p 60Hz";break;}
+//      case TMDL_HDMITX_VFMT_36_2880x480p_60Hz: {return "vic 3: 2880x480p 60Hz";break;}
       case TMDL_HDMITX_VFMT_37_2880x576p_50Hz: {return "vic 3: 2880x576p 50Hz";break;}
       case TMDL_HDMITX_VFMT_38_2880x576p_50Hz: {return "vic 3: 2880x576p 50Hz";break;}
       case TMDL_HDMITX_VFMT_60_1280x720p_24Hz: {return "vic 60: 1280x720p 24Hz";break;}

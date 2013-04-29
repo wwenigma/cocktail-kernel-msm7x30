@@ -1,4 +1,4 @@
-/* Copyright (c) 2009-2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2009-2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -68,7 +68,7 @@
 #define BATTERY_CB_ID_LOW_VOL		2
 
 #define BATTERY_LOW		3400
-#define BATTERY_HIGH		4200
+#define BATTERY_HIGH		4300
 
 #define ONCRPC_CHG_GET_GENERAL_STATUS_PROC	12
 #define ONCRPC_CHARGER_API_VERSIONS_PROC	0xffffffff
@@ -1974,7 +1974,7 @@ static u32 msm_batt_capacity(u32 current_voltage)
 	u32 high_voltage = 0;
 	
 	if (BATTERY_4p35V == batt_type) { 
-	   	msm_batt_info.voltage_min_design = 3000;
+	   	msm_batt_info.voltage_min_design = 2990;
 		msm_batt_info.voltage_max_design = 4200;
 		low_voltage = msm_batt_info.voltage_min_design;
 		high_voltage = msm_batt_info.voltage_max_design;
@@ -1989,7 +1989,7 @@ static u32 msm_batt_capacity(u32 current_voltage)
 		}
 		return jrd_scudbatt_capacity[level_index];
 	}else {//battery is 4.20V type
-	   	msm_batt_info.voltage_min_design = 3000;
+	   	msm_batt_info.voltage_min_design = 2990;
 		msm_batt_info.voltage_max_design = 4200; 
 		low_voltage = msm_batt_info.voltage_min_design;
 		high_voltage = msm_batt_info.voltage_max_design;

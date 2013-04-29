@@ -1,4 +1,4 @@
-/* Copyright (c) 2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -652,6 +652,7 @@ static struct msm_sensor_fn_t s5k3l1yx_func_tbl = {
 	.sensor_config = msm_sensor_config,
 	.sensor_power_up = msm_sensor_power_up,
 	.sensor_power_down = msm_sensor_power_down,
+	.sensor_adjust_frame_lines = msm_sensor_adjust_frame_lines,
 };
 
 static struct msm_sensor_reg_t s5k3l1yx_regs = {

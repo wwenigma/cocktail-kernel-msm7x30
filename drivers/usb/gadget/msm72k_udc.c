@@ -2,7 +2,7 @@
  * Driver for HighSpeed USB Client Controller in MSM7K
  *
  * Copyright (C) 2008 Google, Inc.
- * Copyright (c) 2009-2011, Code Aurora Forum. All rights reserved.
+ * Copyright (c) 2009-2011, The Linux Foundation. All rights reserved.
  * Author: Mike Lockwood <lockwood@android.com>
  *         Brian Swetland <swetland@google.com>
  *
@@ -59,6 +59,7 @@ static const char driver_name[] = "msm72k_udc";
 #define EPT_FLAG_IN        0x0001
 
 #define SETUP_BUF_SIZE     8
+
 
 static const char *const ep_name[] = {
 	"ep0out", "ep1out", "ep2out", "ep3out",

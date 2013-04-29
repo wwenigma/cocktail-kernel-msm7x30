@@ -1,4 +1,4 @@
-/* Copyright (c) 2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -198,6 +198,7 @@ vreg_enable_failed:
 		ARRAY_SIZE(csid_vreg_info), &csid_dev->csi_vdd, 0);
 vreg_config_failed:
 	iounmap(csid_dev->base);
+	csid_dev->base = NULL;
 	return rc;
 }
 
@@ -220,6 +221,7 @@ static int msm_csid_release(struct v4l2_subdev *sd)
 		ARRAY_SIZE(csid_vreg_info), &csid_dev->csi_vdd, 0);
 
 	iounmap(csid_dev->base);
+	csid_dev->base = NULL;
 	return 0;
 }
 

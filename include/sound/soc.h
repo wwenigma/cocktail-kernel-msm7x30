@@ -542,6 +542,7 @@ struct snd_soc_jack {
 /* SoC PCM stream information */
 struct snd_soc_pcm_stream {
 	const char *stream_name;
+	const char *aif_name;	/* DAPM AIF widget name */
 	u64 formats;			/* SNDRV_PCM_FMTBIT_* */
 	unsigned int rates;		/* SNDRV_PCM_RATE_* */
 	unsigned int rate_min;		/* min rate */
@@ -815,6 +816,7 @@ struct snd_soc_card {
 	struct mutex mutex;
 	struct mutex dapm_mutex;
 	struct mutex dsp_mutex;
+	spinlock_t dsp_spinlock;
 
 	bool instantiated;
 

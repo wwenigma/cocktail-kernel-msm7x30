@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2010-2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -66,5 +66,5 @@ struct reserve_info {
 
 extern struct reserve_info *reserve_info;
 
-unsigned long __init reserve_memory_for_fmem(unsigned long);
+unsigned long __init reserve_memory_for_fmem(unsigned long, unsigned long);
 #endif

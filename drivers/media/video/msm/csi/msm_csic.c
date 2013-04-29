@@ -1,4 +1,4 @@
-/* Copyright (c) 2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -434,6 +434,7 @@ static int __devinit csic_probe(struct platform_device *pdev)
 	}
 	disable_irq(new_csic_dev->irq->start);
 	iounmap(new_csic_dev->base);
+	new_csic_dev->base = NULL;
 
 	new_csic_dev->pdev = pdev;
 	return 0;

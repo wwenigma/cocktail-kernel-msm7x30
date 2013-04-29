@@ -21,7 +21,7 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: bcmsdh_linux.c 310626 2012-01-25 05:47:55Z $
+ * $Id: bcmsdh_linux.c 312788 2012-02-03 23:06:32Z $
  */
 
 /**
@@ -230,7 +230,6 @@ int bcmsdh_probe(struct device *dev)
 
 	/* Read the vendor/device ID from the CIS */
 	vendevid = bcmsdh_query_device(sdh);
-
 	/* try to attach to the target device */
 	if (!(sdhc->ch = drvinfo.attach((vendevid >> 16),
 	                                 (vendevid & 0xFFFF), 0, 0, 0, 0,
@@ -280,7 +279,6 @@ int bcmsdh_remove(struct device *dev)
 		SDLX_MSG(("%s: failed\n", __FUNCTION__));
 		return 0;
 	}
-
 
 	/* release SDIO Host Controller info */
 	osh = sdhc->osh;
@@ -514,21 +512,6 @@ bcmsdh_pci_remove(struct pci_dev *pdev)
 
 extern int sdio_function_init(void);
 
-extern int sdio_func_reg_notify(void* semaphore);
-extern void sdio_func_unreg_notify(void);
-
-#if defined(BCMLXSDMMC)
-int bcmsdh_reg_sdio_notify(void* semaphore)
-{
-	return sdio_func_reg_notify(semaphore);
-}
-
-void bcmsdh_unreg_sdio_notify(void)
-{
-	sdio_func_unreg_notify();
-}
-#endif /* defined(BCMLXSDMMC) */
-
 int
 bcmsdh_register(bcmsdh_driver_t *driver)
 {
@@ -637,12 +620,6 @@ int bcmsdh_register_oob_intr(void * dhdp)
 	return 0;
 }
 
-void *bcmsdh_get_drvdata(void)
-{
-	if (!sdhcinfo)
-		return NULL;
-	return dev_get_drvdata(sdhcinfo->dev);
-}
 void bcmsdh_set_irq(int flag)
 {
 	if (sdhcinfo->oob_irq_registered && sdhcinfo->oob_irq_enable_flag != flag) {
@@ -669,6 +646,15 @@ void bcmsdh_unregister_oob_intr(void)
 	}
 }
 #endif /* defined(OOB_INTR_ONLY) */
+
+#if defined(BCMLXSDMMC)
+void *bcmsdh_get_drvdata(void)
+{
+	if (!sdhcinfo)
+		return NULL;
+	return dev_get_drvdata(sdhcinfo->dev);
+}
+#endif
 
 /* Module parameters specific to each host-controller driver */
 

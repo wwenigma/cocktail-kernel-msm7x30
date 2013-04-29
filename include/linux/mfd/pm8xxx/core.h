@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, Code Aurora Forum. All rights reserved.
+ * Copyright (c) 2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -41,8 +41,6 @@ enum pm8xxx_version {
 #define PM8XXX_REVISION_8901_1p1	2
 #define PM8XXX_REVISION_8901_2p0	3
 #define PM8XXX_REVISION_8901_2p1	4
-#define PM8XXX_REVISION_8901_2p2	5
-#define PM8XXX_REVISION_8901_2p3	6
 
 #define PM8XXX_REVISION_8921_TEST	0
 #define PM8XXX_REVISION_8921_1p0	1

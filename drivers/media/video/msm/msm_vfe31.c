@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2012, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -2912,13 +2912,10 @@ static void vfe31_process_error_irq(uint32_t errStatus)
 
 	if (errStatus & VFE31_IMASK_CAMIF_ERROR) {
 		pr_err("vfe31_irq: camif errors\n");
-		// pr328243 leiming
-                if (vfe31_ctrl->s_info->csi_if) {
-		    temp = (uint32_t *)(vfe31_ctrl->vfebase + VFE_CAMIF_STATUS);
-		    camifStatus = msm_io_r(temp);
-		    pr_err("camifStatus  = 0x%x\n", camifStatus);
-		    vfe31_send_msg_no_payload(MSG_ID_CAMIF_ERROR);
-                }
+		temp = (uint32_t *)(vfe31_ctrl->vfebase + VFE_CAMIF_STATUS);
+		camifStatus = msm_io_r(temp);
+		pr_err("camifStatus  = 0x%x\n", camifStatus);
+		vfe31_send_msg_no_payload(MSG_ID_CAMIF_ERROR);
 	}
 
 	if (errStatus & VFE31_IMASK_STATS_CS_OVWR)

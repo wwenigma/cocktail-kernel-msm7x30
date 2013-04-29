@@ -4,6 +4,8 @@
 
 # Each configuration option enables a list of files.
 
+CFLAGS_bma250.o = -Wno-maybe-uninitialized
+
 obj-$(CONFIG_INPUT_88PM860X_ONKEY)	+= 88pm860x_onkey.o
 obj-$(CONFIG_INPUT_AB8500_PONKEY)	+= ab8500-ponkey.o
 obj-$(CONFIG_INPUT_AD714X)		+= ad714x.o

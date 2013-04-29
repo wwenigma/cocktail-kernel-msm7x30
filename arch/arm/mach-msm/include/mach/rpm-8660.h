@@ -1,4 +1,4 @@
-/* Copyright (c) 2011, Code Aurora Forum. All rights reserved.
+/* Copyright (c) 2011, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -323,7 +323,7 @@ enum {
 	MSM_RPMRS_VDD_MEM_RET_LOW = 500,
 	MSM_RPMRS_VDD_MEM_RET_HIGH = 750,
 	MSM_RPMRS_VDD_MEM_ACTIVE = 1000,
-	MSM_RPMRS_VDD_MEM_MAX = 1325,
+	MSM_RPMRS_VDD_MEM_MAX = 1250,
 };
 
 enum {

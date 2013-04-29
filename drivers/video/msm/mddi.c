@@ -2,7 +2,7 @@
  * MSM MDDI Transport
  *
  * Copyright (C) 2007 Google Incorporated
- * Copyright (c) 2007-2011, Code Aurora Forum. All rights reserved.
+ * Copyright (c) 2007-2012, The Linux Foundation. All rights reserved.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -39,18 +39,12 @@
 #include <mach/gpio.h>
 #include <mach/clk.h>
 
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-extern int msmfb_bootup;
-#endif 
 
 #ifdef CONFIG_MDDI_HIMAX_24BIT_WORKROUND
 extern void mddi_himax_ic_init_again(void);
 extern int mddi_himax_workround_enable(void);
 #endif
 
-#ifdef CONFIG_FB_MSM_MDDI_RY002Z
-extern void mddi_enable_high_clk(uint32 enable);
-#endif
 static int mddi_probe(struct platform_device *pdev);
 static int mddi_remove(struct platform_device *pdev);
 
@@ -168,11 +162,11 @@ static void pmdh_clk_disable()
 	}
 
 	if (mddi_clk) {
-		clk_disable(mddi_clk);
+		clk_disable_unprepare(mddi_clk);
 		pmdh_clk_status = 0;
 	}
 	if (mddi_pclk)
-		clk_disable(mddi_pclk);
+		clk_disable_unprepare(mddi_pclk);
 	mutex_unlock(&pmdh_clk_lock);
 }
 
@@ -185,11 +179,11 @@ static void pmdh_clk_enable()
 	}
 
 	if (mddi_clk) {
-		clk_enable(mddi_clk);
+		clk_prepare_enable(mddi_clk);
 		pmdh_clk_status = 1;
 	}
 	if (mddi_pclk)
-		clk_enable(mddi_pclk);
+		clk_prepare_enable(mddi_pclk);
 
 	if (int_mddi_pri_flag && !irq_enabled) {
 		enable_irq(INT_MDDI_PRI);
@@ -219,32 +213,18 @@ static int mddi_off(struct platform_device *pdev)
 	}
 
 	pmdh_clk_enable();
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-	if (msmfb_bootup)
-#endif
 	ret = panel_next_off(pdev);
 	pmdh_clk_disable();
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-	//Close power now
-	if (msmfb_bootup)
-	{
-#endif
 
 	if (mddi_pdata && mddi_pdata->mddi_power_save)
 		mddi_pdata->mddi_power_save(0);
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-	}
-#endif
 #ifdef CONFIG_MSM_BUS_SCALING
 	mdp_bus_scale_update_request(0);
 #else
 	if (mfd->ebi1_clk)
-		clk_disable(mfd->ebi1_clk);
+		clk_disable_unprepare(mfd->ebi1_clk);
 #endif
 	pm_runtime_put(&pdev->dev);
-#ifdef CONFIG_FB_MSM_MDDI_RY002Z
-	mddi_enable_high_clk(0);
-#endif
 	return ret;
 }
 
@@ -258,21 +238,10 @@ static int mddi_on(struct platform_device *pdev)
 	u32 stat_reg;
 #endif
 
-#ifdef CONFIG_FB_MSM_MDDI_RY002Z
-	mddi_enable_high_clk(1);
-#endif
 	mfd = platform_get_drvdata(pdev);
 	pm_runtime_get(&pdev->dev);
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-	//Close LCD Power now
-	if (msmfb_bootup)
-	{
-#endif
 	if (mddi_pdata && mddi_pdata->mddi_power_save)
 		mddi_pdata->mddi_power_save(1);
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-	}
-#endif
 
 	pmdh_clk_enable();
 #ifdef ENABLE_FWD_LINK_SKEW_CALIBRATION
@@ -318,9 +287,6 @@ static int mddi_on(struct platform_device *pdev)
 	if (mfd->ebi1_clk)
 		clk_enable(mfd->ebi1_clk);
 #endif
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-	if (msmfb_bootup)
-#endif
 	ret = panel_next_on(pdev);
 
 #ifdef CONFIG_MDDI_HIMAX_24BIT_WORKROUND
@@ -342,9 +308,38 @@ static int mddi_probe(struct platform_device *pdev)
 	int rc;
 	resource_size_t size ;
 	u32 clk_rate;
+	unsigned long rate;
+	int ret;
+	struct clk *ebi1_clk = NULL;
 
 	if ((pdev->id == 0) && (pdev->num_resources >= 0)) {
 		mddi_pdata = pdev->dev.platform_data;
+		pmdh_clk_status = 0;
+
+		mddi_clk = clk_get(&pdev->dev, "core_clk");
+		if (IS_ERR(mddi_clk)) {
+			pr_err("can't find mddi_clk\n");
+			return PTR_ERR(mddi_clk);
+		}
+		rate = clk_round_rate(mddi_clk, 49000000);
+		ret = clk_set_rate(mddi_clk, rate);
+		if (ret)
+			pr_err("Can't set mddi_clk min rate to %lu\n",
+									rate);
+
+		pr_info("mddi_clk init rate is %lu\n",
+			clk_get_rate(mddi_clk));
+		mddi_pclk = clk_get(&pdev->dev, "iface_clk");
+		if (IS_ERR(mddi_pclk))
+			mddi_pclk = NULL;
+		pmdh_clk_enable();
+
+#ifndef CONFIG_MSM_BUS_SCALING
+		ebi1_clk = clk_get(&pdev->dev, "mem_clk");
+		if (IS_ERR(ebi1_clk))
+			return PTR_ERR(ebi1_clk);
+		clk_set_rate(ebi1_clk, 65000000);
+#endif
 
 		size =  resource_size(&pdev->resource[0]);
 		msm_pmdh_base =  ioremap(pdev->resource[0].start, size);
@@ -354,16 +349,9 @@ static int mddi_probe(struct platform_device *pdev)
 
 		if (unlikely(!msm_pmdh_base))
 			return -ENOMEM;
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-		if (msmfb_bootup)//Close MDDI Power 
-		{
-#endif
 
 		if (mddi_pdata && mddi_pdata->mddi_power_save)
 			mddi_pdata->mddi_power_save(1);
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-		}
-#endif
 		mddi_resource_initialized = 1;
 		return 0;
 	}
@@ -372,6 +360,7 @@ static int mddi_probe(struct platform_device *pdev)
 		return -EPERM;
 
 	mfd = platform_get_drvdata(pdev);
+	mfd->ebi1_clk = ebi1_clk;
 
 	if (!mfd)
 		return -ENODEV;
@@ -449,12 +438,6 @@ static int mddi_probe(struct platform_device *pdev)
 
 	rc = 0;
 	pm_runtime_enable(&pdev->dev);
-#ifndef CONFIG_MSM_BUS_SCALING
-	mfd->ebi1_clk = clk_get(NULL, "ebi1_mddi_clk");
-	if (IS_ERR(mfd->ebi1_clk))
-		return PTR_ERR(mfd->ebi1_clk);
-	clk_set_rate(mfd->ebi1_clk, 65000000);
-#endif
 	/*
 	 * register in mdp driver
 	 */
@@ -504,15 +487,8 @@ void mddi_disable(int lock)
 	mddi_host_reg_out(PAD_CTL, 0x0);
 
 	pmdh_clk_disable();
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-	if (msmfb_bootup)//Not close power now
-	{
-#endif
 	if (mddi_pdata && mddi_pdata->mddi_power_save)
 		mddi_pdata->mddi_power_save(0);
-#ifdef CONFIG_FIX_BOOTUP_BLINK
-	}
-#endif
 }
 
 #ifdef CONFIG_PM
@@ -605,25 +581,6 @@ static int mddi_register_driver(void)
 static int __init mddi_driver_init(void)
 {
 	int ret;
-	unsigned long rate;
-	pmdh_clk_status = 0;
-
-	mddi_clk = clk_get(NULL, "mddi_clk");
-	if (IS_ERR(mddi_clk)) {
-		printk(KERN_ERR "can't find mddi_clk\n");
-		return PTR_ERR(mddi_clk);
-	}
-	rate = clk_round_rate(mddi_clk, 49000000);
-	ret = clk_set_rate(mddi_clk, rate);
-	if (ret)
-		printk(KERN_ERR "Can't set mddi_clk min rate to %lu\n", rate);
-
-	printk(KERN_INFO "mddi_clk init rate is %lu\n",
-		clk_get_rate(mddi_clk));
-	mddi_pclk = clk_get(NULL, "mddi_pclk");
-	if (IS_ERR(mddi_pclk))
-		mddi_pclk = NULL;
-	pmdh_clk_enable();
 
 	ret = mddi_register_driver();
 	if (ret) {

@@ -921,7 +921,6 @@ static int __init ft5306_ts_init(void)
 	}
 
 	printk("%s chip_id=%d\n",__func__,chip_id);
-
 #ifdef FW_UPGRADE_ENABLE
 	msleep(10);
 	firmware_ver = fts_ctpm_get_upg_ver();	/*Get Firmware file version*/
